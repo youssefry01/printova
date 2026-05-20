@@ -1,0 +1,116 @@
+* {
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    margin: 0;
+    background: #f4f6f9;
+    color: #333;
+}
+
+header {
+    background: linear-gradient(135deg, #4e73df, #1cc88a);
+    padding: 20px;
+    color: white;
+    text-align: center;
+    font-size: 26px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.container {
+    width: 95%;
+    max-width: 1300px;
+    margin: 30px auto;
+}
+
+.section {
+    background: white;
+    padding: 20px;
+    color: #000000;
+    margin-bottom: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.section h2 {
+    margin-top: 0;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 8px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.section-content {
+    color: #4e73df;
+    margin-top: 15px;
+    transition: all 0.3s ease;
+}
+
+.section.collapsed .section-content {
+    display: none;
+}
+
+.section > .controller-title::after {
+    font-size: 14px;
+    content: "▼";
+    transition: transform 0.3s ease;
+}
+
+.section.collapsed > .controller-title::after {
+    transform: rotate(90deg);
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+input, textarea {
+    margin: 8px;
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    width: 100%;
+}
+
+button {
+    background: #4e73df;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-bottom: 22px;
+}
+
+button:hover {
+    background: #2e59d9;
+}
+
+pre {
+    background: #f8f9fc;
+    padding: 10px;
+    border-radius: 6px;
+    overflow-x: auto;
+    max-height: 250px;
+}
+
+.note {
+    font-size: 13px;
+    color: #777;
+    margin-bottom: 10px;
+}
+
+#welcomeBanner {
+    background: #d1f2eb;
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+}

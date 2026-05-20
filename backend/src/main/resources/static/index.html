@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Printova Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="js/app.js" defer></script>
+    <title>Printova</title>
+</head>
+<body>
+    <header>
+        Printova Dashboard
+        <a href="http://localhost:8080/swagger-ui/index.html#/"
+            style="float:right; margin-right:20px; color:#fff; background:#4f46e5; padding:6px 14px; border-radius:6px; text-decoration:none; font-size:14px; font-weight:600; letter-spacing:0.3px; opacity:0.9; transition:opacity 0.2s;"
+            onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.9'">
+            Swagger UI
+        </a>
+    </header>
+
+    <div class="container">
+
+        <div id="welcomeBanner" style="display:none;">
+            Welcome, <span id="currentUserEmail"></span>!
+        </div>
+
+        <!-- ================= AUTHENTICATION ================= -->
+        <div class="section">
+            <h2 class="controller-title">Authentication</h2>
+            <div class="section-content">
+                <h2>Register</h2>
+                <div class="form-grid">
+                    <input id="regFirstName" placeholder="First Name">
+                    <input id="regLastName" placeholder="Last Name">
+                    <input id="regEmail" placeholder="Email">
+                    <input id="regPhone" placeholder="Phone Number">
+                    <input id="regPassword" type="password" placeholder="Password">
+                    <input id="regAddress" placeholder="Address">
+                </div>
+                <button onclick="register()">Register</button>
+
+                <h2>Login</h2>
+                <div class="form-grid">
+                    <input id="loginEmail" type="email" placeholder="Email">
+                    <input id="loginPassword" type="password" placeholder="Password">
+                </div>
+                <button onclick="login()">Login</button>
+
+                <p><b>JWT Access Token:</b></p>
+                <textarea id="tokenBox" rows="5" cols="80"></textarea>
+
+
+
+                <h2>Logout</h2>
+                <button onclick="logout()">Logout</button>
+                <p id="logoutMessage"></p>
+            </div>
+        </div>
+
+        <!-- ================= USERS ================= -->
+        <div class="section">
+            <h2 class="controller-title">Users</h2>
+            <div class="section-content">
+
+                <h2>Get User By ID</h2>
+                <p style="margin-top:-10px; font-size:14px; color:gray;">Admin: any user | User: own account only</p>
+                <div class="form-grid">
+                        <input id="getUserId" placeholder="User ID">
+                </div>
+                <button onclick="getUser()">Get User</button>
+                <pre id="userResult"></pre>
+
+                <h2>Get All Users</h2>
+                <p style="margin-top:-10px; font-size:14px; color:gray;">Allowed Roles: Admin only</p>
+                <pre id="allUsersResult"></pre>
+                <button onclick="getAllUsers()">Get All</button>
+
+                <h2>Update User</h2>
+                <p style="margin-top:-10px; font-size:14px; color:gray;">Admin: any user | User: own account only</p>
+                <div class="form-grid">
+                    <input id="updateUserId" placeholder="User ID">
+                    <input id="updateFirstName" placeholder="First Name">
+                    <input id="updateLastName" placeholder="Last Name">
+                    <input id="updateEmail" placeholder="Email">
+                    <input id="updatePhone" placeholder="Phone Number">
+                    <input id="updateAddress" placeholder="Address">
+                </div>
+                <button onclick="updateUser()">Update</button>
+                <pre id="updateResult"></pre>
+
+                <h2>Change Password</h2>
+                <div class="form-grid">
+                    <input id="oldPassword" type="password" placeholder="Old Password">
+                    <input id="newPassword" type="password" placeholder="New Password">
+                </div>
+                <button onclick="changePassword()">Change Password</button>
+                <pre id="changePasswordResult"></pre>
+            </div>
+        </div>
+
+        <!-- ================= ROLES ================= -->
+        <div class="section">
+            <h2 class="controller-title">Roles</h2>
+            <div class="section-content">
+
+                <h2>Get All Roles</h2>
+                <p style="margin-top:-10px; font-size:14px; color:gray;">Allowed Roles: Admin only</p>
+                <pre id="allRolesResult"></pre>
+                <button onclick="getAllRoles()">Get All Roles</button>
+
+                <h2>Get Role By Id</h2>
+                <p style="margin-top:-10px; font-size:14px; color:gray;">Allowed Roles: Admin only</p>
+                <div class="form-grid">
+                    <input id="roleById" placeholder="Role ID">
+                </div>
+                <button onclick="getRoleById()">Get Role By Id</button>
+                <pre id="roleByIdResult"></pre>
+
+                <h2>Add Role</h2>
+                <p style="margin-top:-10px; font-size:14px; color:gray;">Allowed Roles: Admin only</p>
+                <div class="form-grid">
+                    <input id="addRoleName" placeholder="Role Name">
+                </div>
+                <pre id="addRoleResult"></pre>
+                <button onclick="addRole()">Add Role</button>
+
+                <h2>Get User Roles</h2>
+                <p style="margin-top:-10px; font-size:14px; color:gray;">Admin: any user | User: own account only</p>
+                <div class="form-grid">
+                    <input id="getUserRolesRoleId" placeholder="User ID">
+                </div>
+                <pre id="userRoles"></pre>
+                <button onclick="getUserRoles()">Get User Roles</button>
+
+                <h2>Add User Role</h2>
+                <p style="margin-top:-10px; font-size:14px; color:gray;">Allowed Roles: Admin any role | Manager: only roles below Manager | User: no role management</p>
+                <div class="form-grid">
+                    <input id="addUserRoleUserId" placeholder="User ID">
+                    <input id="addUserRoleName" placeholder="Role Name">
+                </div>
+                <button onclick="addUserRole()">Add User Role</button>
+                <pre id="addUserRoleResult"></pre>
+
+                <h2>Remove User Role</h2>
+                <p style="margin-top:-10px; font-size:14px; color:gray;">Allowed Roles: Admin any role | Manager: only roles below Manager | User: no role management</p>
+                <div class="form-grid">
+                    <input id="removeUserRoleUserId" placeholder="User ID">
+                    <input id="removeUserRoleName" placeholder="Role Name">
+                </div>
+                <button onclick="removeUserRole()">Remove User Role</button>
+                <pre id="removeUserRoleResult"></pre>
+            </div>
+        </div>
+
+        <!-- ================= CATEGORIES ================= -->
+        <div class="section">
+            <h2 class="controller-title">Categories</h2>
+            <div class="section-content">
+
+                <h2>Get All Categories</h2>
+                <pre id="allCategoriesResult"></pre>
+                <button onclick="getAllCategories()">Get All</button>
+                
+                <h2>Get Category</h2>
+                <div class="form-grid">
+                    <input id="getCategoryId" placeholder="Category ID">
+                </div>
+                <pre id="categoryResult"></pre>
+                <button onclick="getCategory()">Get Category</button>
+
+                <h2>Add Category</h2>
+                <p style="margin-top:-10px; font-size:14px; color:gray;">Allowed Roles: Admin, Manager</p>
+                <div class="form-grid">
+                    <input id="addCategoryName" placeholder="Category Name">
+                    <input id="addCategoryDescription" placeholder="Category Description">
+                </div>
+                <button onclick="addCategory()">Add Category</button>
+                <pre id="addCategoryResult"></pre>
+
+                <h2>Update Category</h2>
+                <p style="margin-top:-10px; font-size:14px; color:gray;">Allowed Roles: Admin, Manager</p>
+                <div class="form-grid">
+                    <input id="updateCategoryId" placeholder="Category ID">
+                    <input id="updateCategoryName" placeholder="Category Name">
+                    <input id="updateCategoryDescription" placeholder="Category Description">
+                </div>
+                <button onclick="updateCategory()">Update Category</button>
+                <pre id="updateCategoryResult"></pre>
+
+                <h2>Delete Category</h2>
+                <p style="margin-top:-10px; font-size:14px; color:gray;">Allowed Roles: Admin, Manager</p>
+                <div class="form-grid">
+                    <input id="deleteCategoryId" placeholder="Category ID">
+                </div>
+                <button onclick="deleteCategory()">Delete Category</button>
+                <pre id="deleteCategoryResult"></pre>
+                
+            </div>
+        </div>
+        <!-- ================= SUPPLIERS ================= -->
+        <div class="section">
+            <h2 class="controller-title">Suppliers</h2>
+            <div class="section-content">
+                <h2>Get All Suppliers</h2>
+                <p style="margin-top:-10px; font-size:14px; color:gray;">Allowed Roles: Admin, Manager</p>
+                <pre id="allSuppliersResult"></pre>
+                <button onclick="getAllSuppliers()">Get All</button>
+                
+                <h2>Get Supplier</h2>
+                <p style="margin-top:-10px; font-size:14px; color:gray;">Allowed Roles: Admin, Manager</p>
+                <div class="form-grid">
+                    <input id="getSupplierId" placeholder="Supplier ID">
+                </div>
+                <pre id="supplierResult"></pre>
+                <button onclick="getSupplier()">Get Supplier</button>
+
+                <h2>Add Supplier</h2>
+                <p style="margin-top:-10px; font-size:14px; color:gray;">
+                    Allowed Roles: Admin, Manager
+                </p>
+                <div class="form-grid">
+                    <input id="addSupplierName" placeholder="Supplier Name">
+                    <input id="addSupplierEmail" placeholder="Supplier Email">
+                    <input id="addSupplierPhone" placeholder="Supplier Phone">
+                </div>
+                <button onclick="addSupplier()">Add Supplier</button>
+                <pre id="addSupplierResult"></pre>
+
+                <h2>Update Supplier</h2>
+                <p style="margin-top:-10px; font-size:14px; color:gray;">
+                    Allowed Roles: Admin, Manager
+                </p>
+                <div class="form-grid">
+                    <input id="updateSupplierId" placeholder="Supplier ID">
+                    <input id="updateSupplierName" placeholder="Supplier Name">
+                    <input id="updateSupplierEmail" placeholder="Supplier Email">
+                    <input id="updateSupplierPhone" placeholder="Supplier Phone">
+                </div>
+                <button onclick="updateSupplier()">Update Supplier</button>
+                <pre id="updateSupplierResult"></pre>
+
+                <h2>Delete Supplier</h2>
+                <p style="margin-top:-10px; font-size:14px; color:gray;">
+                    Allowed Roles: Admin, Manager
+                </p>
+                <div class="form-grid">
+                    <input id="deleteSupplierId" placeholder="Supplier ID">
+                </div>
+                <button onclick="deleteSupplier()">Delete Supplier</button>
+                <pre id="deleteSupplierResult"></pre>
+            </div>
+        </div>
+
+        <!-- ================= SERVICES ================= -->
+        <div class="section">
+            <h2 class="controller-title">Services</h2>
+            <div class="section-content">
+
+                <h2>Get All Services</h2>
+                <p style="margin-top:-10px; font-size:14px; color:gray;">Allowed Roles: Admin, Manager</p>
+                <pre id="allServicesResult"></pre>
+                <button onclick="getAllServices()">Get All</button>
+                
+                <h2>Get Service</h2>
+                <p style="margin-top:-10px; font-size:14px; color:gray;">Allowed Roles: Admin, Manager</p>
+                <div class="form-grid">
+                    <input id="getServiceId" placeholder="Service ID">
+                </div>
+                <pre id="serviceResult"></pre>
+                <button onclick="getService(document.getElementById('getServiceId').value)">Get Service</button>
+
+                <h2>Add Service</h2>
+                <p style="margin-top:-10px; font-size:14px; color:gray;">Allowed Roles: Admin, Manager</p>
+                <div class="form-grid">
+                    <input id="addServiceName" placeholder="Service Name">
+                    <input id="addServicePrice" placeholder="Service Price">
+                </div>
+                <button onclick="addService()">Add Service</button>
+                <pre id="addServiceResult"></pre>
+
+                <h2>Update Service</h2>
+                <p style="margin-top:-10px; font-size:14px; color:gray;">Allowed Roles: Admin, Manager</p>
+                <div class="form-grid">
+                    <input id="updateServiceId" placeholder="Service ID">
+                    <input id="updateServiceName" placeholder="Service Name">
+                    <input id="updateServicePrice" placeholder="Service Price">
+                </div>
+                <button onclick="updateService()">Update Service</button>
+                <pre id="updateServiceResult"></pre>
+
+                <h2>Delete Service</h2>
+                <p style="margin-top:-10px; font-size:14px; color:gray;">Allowed Roles: Admin, Manager</p>
+                <div class="form-grid">
+                    <input id="deleteServiceId" placeholder="Service ID">
+                </div>
+                <button onclick="deleteService()">Delete Service</button>
+                <pre id="deleteServiceResult"></pre>
+            </div>
+        </div>
+
+        <!-- ================= PARTS ================= -->
+        <div class="section">
+            <h2 class="controller-title">Spare Parts</h2>
+            <div class="section-content">
+                <h2>Get All Parts</h2>
+                <pre id="allPartsResult"></pre>
+                <button onclick="getAllParts()">Get All</button>
+                
+                <h2>Get Part</h2>
+                <div class="form-grid">
+                    <input id="getPartId" placeholder="Part ID">
+                </div>
+                <pre id="partResult"></pre>
+                <button onclick="getPart()">Get Part</button>
+
+                <h2>Add Part</h2>
+                <p style="margin-top:-10px; font-size:14px; color:gray;">Allowed Roles: Admin, Manager</p>
+                <div class="form-grid">
+                    <input id="addPartName" placeholder="Part Name">
+                    <input id="addPartDescription" placeholder="Part Description">
+                    <input id="addPartCategoryId" placeholder="Category ID">
+                    <input id="addPartSupplierId" placeholder="Supplier ID">
+                    <input id="addPartInitialPrice" placeholder="Initial Price">
+                </div>
+                <button onclick="addPart()">Add Part</button>
+                <pre id="addPartResult"></pre>
+
+                <h2>Update Part</h2>
+                <p style="margin-top:-10px; font-size:14px; color:gray;">Allowed Roles: Admin, Manager</p>
+                <div class="form-grid">
+                    <input id="updatePartId" placeholder="Part ID">
+                    <input id="updatePartName" placeholder="Part Name">
+                    <input id="updatePartDescription" placeholder="Part Description">
+                    <input id="updatePartCategoryId" placeholder="Category ID">
+                    <input id="updatePartSupplierId" placeholder="Supplier ID">
+                </div>
+                <button onclick="updatePart()">Update Part</button>
+                <pre id="updatePartResult"></pre>
+
+                <h2>Delete Part</h2>
+                <p style="margin-top:-10px; font-size:14px; color:gray;">Allowed Roles: Admin, Manager</p>
+                <div class="form-grid">
+                    <input id="deletePartId" placeholder="Part ID">
+                </div>
+                <button onclick="deletePart()">Delete Part</button>
+                <pre id="deletePartResult"></pre>
+            </div>
+        </div>
+
+        <!-- ================= PART PRICES ================= -->
+        <div class="section">
+            <h2 class="controller-title">Part Prices</h2>
+            <div class="section-content">
+
+                <h2>Get All Prices</h2>
+                <p style="margin-top:-10px; font-size:14px; color:gray;">Allowed Roles: Admin, Manager</p>
+                <pre id="allPricesResult"></pre>
+                <button onclick="getAllPrices()">Get All</button>
+                
+                <h2>Get Part Prices</h2>
+                <p style="margin-top:-10px; font-size:14px; color:gray;">Allowed Roles: Admin, Manager</p>
+                <div class="form-grid">
+                    <input id="getPartPricesId" placeholder="Part ID">
+                </div>
+                <pre id="partPricesResult"></pre>
+                <button onclick="getPartPrices()">Get Part Prices</button>
+
+                <h2>Get Latest Part Price</h2>
+                <div class="form-grid">
+                    <input id="getLatestPartPriceId" placeholder="Part ID">
+                </div>
+                <pre id="latestPartPriceResult"></pre>
+                <button onclick="getLatestPartPrice(document.getElementById('getLatestPartPriceId').value)">Get Latest Part Price</button>
+
+                <h2>Add Part Price</h2>
+                <p style="margin-top:-10px; font-size:14px; color:gray;">Allowed Roles: Admin, Manager</p>
+                <div class="form-grid">
+                    <input id="addPartPricePartId" placeholder="Part ID">
+                    <input id="addPartPriceValue" placeholder="Price">
+                </div>
+                <button onclick="addPartPrice()">Add Part Price</button>
+                <pre id="addPartPriceResult"></pre>
+            </div>
+        </div>
+
+        <!-- ================= Stock ================= -->
+        <div class="section">
+            <h2 class="controller-title">Stock</h2>
+            <div class="section-content">
+                
+                <h2>Get All Stock</h2>
+                <p style="margin-top:-10px; font-size:14px; color:gray;">Allowed Roles: Admin, Manager</p>
+                <pre id="allStockResult"></pre>
+                <button onclick="getAllStock()">Get All</button>
+                
+                <h2>Get Stock by Part ID</h2>
+                <p style="margin-top:-10px; font-size:14px; color:gray;">Allowed Roles: Admin, Manager</p>
+                <div class="form-grid">
+                    <input id="getStockPartId" placeholder="Part ID">
+                </div>
+                <pre id="partStockResult"></pre>
+                <button onclick="getPartStock()">Get Part Stock</button>
+
+                <h2>Update Part Stock</h2>
+                <p style="margin-top:-10px; font-size:14px; color:gray;">Allowed Roles: Admin, Manager</p>
+                <div class="form-grid">
+                    <input id="updatePartStockPartId" placeholder="Part ID">
+                    <input id="updatePartStockValue" placeholder="Stock Value">
+                </div>
+                <button onclick="updatePartStock()">Update Part Stock</button>
+                <pre id="updatePartStockResult"></pre>
+
+                <h2>Adjust Part Stock</h2>
+                <p style="margin-top:-10px; font-size:14px; color:gray;">Allowed Roles: Admin, Manager</p>
+                <div class="form-grid">
+                    <input id="adjustPartStockPartId" placeholder="Part ID">
+                    <input id="adjustPartStockQuantityChange" placeholder="Quantity Change">
+                </div>
+                <button onclick="adjustPartStock()">Adjust Part Stock</button>
+                <pre id="adjustPartStockResult"></pre>
+            </div>
+        </div>
+
+        <!-- ================= PAYMENT METHOD ================= -->
+        <div class="section">
+            <h2 class="controller-title">Payment Method</h2>
+            <div class="section-content">
+
+                <h2>Get All Payment Methods</h2>
+                <p style="margin-top:-10px; font-size:14px; color:gray;">Allowed Roles: Admin only</p>
+                <pre id="allPaymentMethodsResult"></pre>
+                <button onclick="getAllPaymentMethods()">Get All Payment Methods</button>
+                
+                <h2>Get Payment Method by ID</h2>
+                <p style="margin-top:-10px; font-size:14px; color:gray;">Allowed Roles: Admin only</p>
+                <div class="form-grid">
+                    <input id="getPaymentMethodId" placeholder="Payment Method ID">
+                </div>
+                <pre id="paymentMethodResult"></pre>
+                <button onclick="getPaymentMethod()">Get Payment Method</button>
+
+                <h2>Update Payment Method</h2>
+                <p style="margin-top:-10px; font-size:14px; color:gray;">Allowed Roles: Admin only</p>
+                <div class="form-grid">
+                    <input id="updatePaymentMethodId" placeholder="Payment Method ID">
+                    <input id="updatePaymentMethodCode" placeholder="Payment Method Code">
+                    <input id="updatePaymentMethodName" placeholder="Payment Method Name">
+                </div>
+                <button onclick="updatePaymentMethod()">Update Payment Method</button>
+                <pre id="updatePaymentMethodResult"></pre>
+
+                <h2>Add Payment Method</h2>
+                <p style="margin-top:-10px; font-size:14px; color:gray;">Allowed Roles: Admin only</p>
+                <div class="form-grid">
+                    <input id="addPaymentMethodCode" placeholder="Payment Method Code">
+                    <input id="addPaymentMethodName" placeholder="Payment Method Name">
+                </div>
+                <button onclick="addPaymentMethod()">Add Payment Method</button>
+                <pre id="addPaymentMethodResult"></pre>
+
+                <h2>Delete Payment Method</h2>
+                <p style="margin-top:-10px; font-size:14px; color:gray;">Allowed Roles: Admin only</p>
+                <div class="form-grid">
+                    <input id="deletePaymentMethodId" placeholder="Payment Method ID">
+                </div>
+                <button onclick="deletePaymentMethod()">Delete Payment Method</button>
+                <pre id="deletePaymentMethodResult"></pre>
+            </div>
+        </div>
+
+        <!-- ================= CART ================= -->
+        <div class="section">
+            <h2 class="controller-title">Cart</h2>
+            <div class="section-content">
+
+                <h2>Get Cart</h2>
+                <pre id="cartResult"></pre>
+                <button onclick="getCart()">Get Cart</button>
+                
+                <h2>Add to Cart</h2>
+                <div class="form-grid">
+                    <input id="addToCartPartId" placeholder="Part ID">
+                    <input id="addToCartQuantity" placeholder="Quantity">
+                </div>
+                <pre id="addToCartResult"></pre>
+                <button onclick="addToCart()">Add to Cart</button>
+
+                <h2>Update Cart Item Quantity</h2>
+                <div class="form-grid">
+                    <input id="updateCartItemPartId" placeholder="Part ID">
+                    <input id="updateCartItemQuantityValue" placeholder="New Quantity">
+                </div>
+                <pre id="updateCartItemQuantityResult"></pre>
+                <button onclick="updateCartItemQuantity()">Update Cart Item Quantity</button>
+
+                <h2>Remove Cart Item</h2>
+                <div class="form-grid">
+                    <input id="removeCartItemPartId" placeholder="Part ID">
+                </div>
+                <pre id="removeCartItemResult"></pre>
+                <button onclick="removeCartItem()">Remove Cart Item</button>
+
+                <h2>Clear Cart</h2>
+                <pre id="clearCartResult"></pre>
+                <button onclick="clearCart()">Clear Cart</button>
+            </div>
+        </div>
+
+        <!-- ================= ORDER ================= -->
+        <div class="section">
+            <h2 class="controller-title">Order</h2>
+            <div class="section-content">
+                <h2>Get Your Orders</h2>
+                <pre id="ordersResult"></pre>
+                <button onclick="getOrders()">Get Orders</button>
+
+                <h2>Get Your Order By Id</h2>
+                <div class="form-grid">
+                    <input id="getOrderById" placeholder="Order ID">
+                </div>
+                <pre id="orderByIdResult"></pre>
+                <button onclick="getOrder()">Get Order By Id</button>
+                
+                <h2>Create Order</h2>
+                <div class="form-grid">
+                    <input id="createOrderAddress" placeholder="Address">
+                </div>
+                <pre id="createOrderResult"></pre>
+                <button onclick="createOrder()">Create Order</button>
+            </div>
+        </div>
+
+        <!-- ================= DELIVERY ================= -->
+        <div class="section">
+            <h2 class="controller-title">Delivery</h2>
+            <div class="section-content">
+                
+                <h2>Get Pending Orders</h2>
+                <p style="margin-top:-10px; font-size:14px; color:gray;">Allowed Roles: Delivery only</p>
+                <pre id="pendingOrdersResult"></pre>
+                <button onclick="getPendingOrders()">Get Pending Orders</button>
+
+                <h2>Get Completed Orders</h2>
+                <p style="margin-top:-10px; font-size:14px; color:gray;">Allowed Roles: Delivery only</p>
+                <pre id="completedOrdersResult"></pre>
+                <button onclick="getCompletedOrders()">Get Completed Orders</button>
+
+                <h2>Complete Order</h2>
+                <p style="margin-top:-10px; font-size:14px; color:gray;">Allowed Roles: Delivery only</p>
+                <div class="form-grid">
+                    <input id="completeOrderId" placeholder="Order ID">
+                </div>
+                <pre id="completeOrderResult"></pre>
+                <button onclick="completeOrder()">Complete Order</button>
+                
+            </div>
+        </div>
+
+        <!-- ================= MAINTENANCE ================= -->
+        <div class="section">
+            <h2 class="controller-title">Maintenance</h2>
+            <div class="section-content">
+
+                <h2>Get Your Maintenances</h2>
+                <pre id="maintenancesResult"></pre>
+                <button onclick="getMaintenances()">Get Maintenances</button>
+
+                <h2>Get Your Maintenance By Id</h2>
+                <div class="form-grid">
+                    <input id="getMaintenanceById" placeholder="Maintenance ID">
+                </div>
+                <pre id="maintenanceByIdResult"></pre>
+                <button onclick="getMaintenance()">Get Maintenance By Id</button>
+                
+                <h2>Create Maintenance</h2>
+                <div class="form-grid">
+                    <input id="createMaintenanceAddress" placeholder="Address">
+                    <input id="createMaintenanceDescription" placeholder="Description">
+                    <input id="createMaintenanceDate" type="datetime-local">
+                </div>
+                <pre id="createMaintenanceResult"></pre>
+                <button onclick="createMaintenance()">Create Maintenance</button>
+
+            </div>
+        </div>
+
+        <!-- ================= TECHNICIAN ================= -->
+        <div class="section">
+            <h2 class="controller-title">Technician</h2>
+            <div class="section-content">
+
+                <h2>Get Scheduled Maintenances</h2>
+                <p style="margin-top:-10px; font-size:14px; color:gray;">Allowed Roles: Technician only</p>
+                <pre id="scheduledMaintenancesResult"></pre>
+                <button onclick="getScheduledMaintenances()">Get Scheduled Maintenances</button>
+
+                <h2>Get Completed Maintenances</h2>
+                <p style="margin-top:-10px; font-size:14px; color:gray;">Allowed Roles: Technician only</p>
+                <pre id="completedMaintenancesResult"></pre>
+                <button onclick="getCompletedMaintenances()">Get Completed Maintenances</button>
+
+                <h2>Complete Maintenance</h2>
+                <p style="margin-top:-10px; font-size:14px; color:gray;">Allowed Roles: Technician only</p>
+                <div class="form-grid">
+                    <input id="completeMaintenanceId" placeholder="Maintenance ID">
+                </div>
+                <pre id="completeMaintenanceResult"></pre>
+                <button onclick="completeMaintenance()">Complete Maintenance</button>
+            </div>
+        </div>
+
+        <!-- ================= PAYMENTS ================= -->
+        <div class="section">
+            <h2 class="controller-title">Payments</h2>
+            <div class="section-content">
+
+                <h2>Get All Payments</h2>
+                <p style="margin-top:-10px; font-size:14px; color:gray;">Allowed Roles: Admin, Manager</p>
+                <pre id="allPaymentsResult"></pre>
+                <button onclick="getAllPayments()">Get All Payments</button>
+
+                <h2>Get Payment By Id</h2>
+                <p style="margin-top:-10px; font-size:14px; color:gray;">Allowed Roles: Admin, Manager</p>
+                <div class="form-grid">
+                    <input id="paymentById" placeholder="Payment ID">
+                </div>
+                <button onclick="getPaymentById(document.getElementById('paymentById').value)">Get Payment By Id</button>
+                <pre id="paymentByIdResult"></pre>
+
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
