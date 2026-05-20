@@ -22,7 +22,7 @@ public interface RefreshTokenRepository extends JpaRepository<RefreshToken, Long
 
         @Modifying
         @Transactional
-        @Query("UPDATE RefreshToken rt SET rt.revoked = trueWHERE rt.refreshToken = :token")
+        @Query("UPDATE RefreshToken rt SET rt.revoked = true WHERE rt.refreshToken = :token")
         void revokeByToken(@Param("token") String token);
 
         @Modifying
