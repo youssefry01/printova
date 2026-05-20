@@ -77,6 +77,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setUser(res.data.userDTO);
       return res;
   };
+  
   const changePassword = async (oldPassword: string, newPassword: string) => {
     return await handleRequest(() => api.post("/api/auth/change-password", {
       oldPassword,
