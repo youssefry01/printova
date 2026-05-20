@@ -7,8 +7,9 @@ import AccountFeed from '@/components/Account/AccountFeed';
 import Loading from '@/components/General/Loading';
 import useMaintenance from '@/hooks/useMaintenance';
 import useOrder from '@/hooks/useOrder';
+import AuthGuard from '@/components/Auth/AuthGuard';
 
-const Account = () => {
+const AccountContent = () => {
   const { user } = useAuth();
   const pageTitle = user && user.firstName ? `@${user.firstName}` : 'Account'
   useTitle(`${pageTitle} - Printova`)
@@ -35,6 +36,14 @@ const Account = () => {
       <AccountFeed user={user} orders={orders} maintenances={maintenances} />
 
     </main>
+  )
+}
+
+const Account = () => {
+  return (
+    <AuthGuard>
+      <AccountContent />
+    </AuthGuard>
   )
 }
 
