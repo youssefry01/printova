@@ -8,7 +8,7 @@ const BASE_URL =
   typeof window !== "undefined" &&
   window.location.hostname === "localhost"
     ? "http://localhost:8080"
-    : "https://printova.onrender.com";
+    : "https://printova-api.onrender.com";
 
 const api = axios.create({
   baseURL: BASE_URL,

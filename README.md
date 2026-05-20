@@ -14,7 +14,7 @@
 [![Vercel](https://img.shields.io/badge/Frontend-Vercel-000000?style=flat-square&logo=vercel)](https://vercel.com/)
 [![Render](https://img.shields.io/badge/Backend-Render-46E3B7?style=flat-square&logo=render)](https://render.com/)
 
-**[🌐 Live Demo](https://printova.vercel.app)** · **[📖 API Docs](https://printova.onrender.com/swagger-ui/index.html)** · **[🐛 Report Bug](https://github.com/youssefry01/printova/issues)**
+**[🌐 Live Demo](https://printova.vercel.app)** · **[📖 API Docs](https://printova-api.onrender.com/swagger-ui/index.html)** · **[🐛 Report Bug](https://github.com/youssefry01/printova/issues)**
 
 </div>
 
@@ -170,7 +170,7 @@ Admin
 
 ## 📡 API Reference
 
-Full interactive documentation available at: **[Swagger UI →](https://printova.onrender.com/swagger-ui/index.html)**
+Full interactive documentation available at: **[Swagger UI →](https://printova-api.onrender.com/swagger-ui/index.html)**
 
 ### Endpoint Summary
 
